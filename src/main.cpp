@@ -118,8 +118,8 @@ int main() {
 					Eigen::VectorXd state(6);
 					state << px, py, psi, v, cte, epsi;
 					auto vars = mpc.Solve(state, coeffs);
-          double steer_value = vars[delta_start+2];//100ms lantency 2*50ms
-          double throttle_value = vars[a_start+2];//100ms lantency 2*50ms
+          double steer_value = vars[delta_start+2];//100ms lantency 2*50ms=delta_start+2
+          double throttle_value = vars[a_start+2];//100ms lantency 2*50ms=a_start+2
           json msgJson;
           // NOTE: Remember to divide by deg2rad(25) before you send the steering value back.
           // Otherwise the values will be in between [-deg2rad(25), deg2rad(25] instead of [-1, 1].
