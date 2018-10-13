@@ -3,16 +3,45 @@ Self-Driving Car Engineer Nanodegree Program
 
 ---
 
-#### Student describes their model in detail. This includes the state, actuators and update equations.
+#### 1. Student describes their model in detail. This includes the state, actuators and update equations.
+state：
+* px = 0; //The vaule is 0 because the coordinate has been transformed according to the car.
+* py = 0; //The vaule is 0 because the coordinate has been transformed according to the car.
+* psi = 0; //The vaule is 0 because the coordinate has been transformed according to the car.
+* v = v;
+* cte = polyeval(coeffs, px); // Defined by the polynomial.
+* epsi = - atan(coeffs[1] + 2 * coeffs[2] * px + 3 * coeffs[3] * px * px); // Defined by the derivative of polynomial.
+
+actuators: It is the first timestamp result value of the pridicted model.
+
+update equations: The cost is caculated as follows:
+```
+		fg[0] = 0;
+		for(unsigned int i=0; i<N; i++){
+			fg[0] += CppAD::pow(vars[cte_start + i], 2);
+			fg[0] += CppAD::pow(vars[epsi_start + i], 2);
+			fg[0] += 10000 * CppAD::pow(vars[v_start + i] - ref_v, 2);
+		}
+		for(unsigned int i=0; i<N-1; i++){
+			fg[0] += 5000 * CppAD::pow(vars[delta_start + i], 2);
+			fg[0] += CppAD::pow(vars[a_start + i], 2);
+		}
+		for(unsigned int i=0; i<N-2; i++){
+			fg[0] += 1000 * CppAD::pow(vars[delta_start + i + 1] - vars[delta_start + i], 2);
+			fg[0] += CppAD::pow(vars[a_start + i + 1] - vars[a_start + i], 2);
+		}	
+```
 
 
-#### Student discusses the reasoning behind the chosen N (timestep length) and dt (elapsed duration between timesteps) values. Additionally the student details the previous values tried.
 
-#### A polynomial is fitted to waypoints. If the student preprocesses waypoints, the vehicle state, and/or actuators prior to the MPC procedure it is described.
+#### 2. Student discusses the reasoning behind the chosen N (timestep length) and dt (elapsed duration between timesteps) values. Additionally the student details the previous values tried.
+System will cost too much time if the N is too big. A very small dt will make N*dt too short to take enough road into account. The car may lose many important information due to a big dt. So we should choose proper N and dt. Beside it's related to the speed of the car. The faster the car is, the smaller the dt should be. My way to choose these data is to point the green line in the simulate, and the proper length of the green line will help me.
 
+#### 3. A polynomial is fitted to waypoints. If the student preprocesses waypoints, the vehicle state, and/or actuators prior to the MPC procedure it is described.
+This model used three degree polynomial. Before we caculate the polynomial, we transformed waypoints, the vehicle state to the car coordinate.
 
-#### The student implements Model Predictive Control that handles a 100 millisecond latency. Student provides details on how they deal with latency.
-
+#### 4. The student implements Model Predictive Control that handles a 100 millisecond latency. Student provides details on how they deal with latency.
+This model deals with latency by constraining the first actuator value to its previous value.
 
 ## Dependencies
 
