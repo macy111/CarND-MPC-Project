@@ -3,6 +3,17 @@ Self-Driving Car Engineer Nanodegree Program
 
 ---
 
+#### Student describes their model in detail. This includes the state, actuators and update equations.
+
+
+#### Student discusses the reasoning behind the chosen N (timestep length) and dt (elapsed duration between timesteps) values. Additionally the student details the previous values tried.
+
+#### A polynomial is fitted to waypoints. If the student preprocesses waypoints, the vehicle state, and/or actuators prior to the MPC procedure it is described.
+
+
+#### The student implements Model Predictive Control that handles a 100 millisecond latency. Student provides details on how they deal with latency.
+
+
 ## Dependencies
 
 * cmake >= 3.5
